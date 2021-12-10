@@ -28,3 +28,5 @@ Kelompok B01
 | **Total** | **1316**  | **/21** |
 
 
+![image](https://user-images.githubusercontent.com/90582800/145570880-a1e94b20-6702-42d6-91db-f3a60e68095f.png)
+
