@@ -334,4 +334,50 @@ Untuk mengetes apakah selain antara 15.01 - 06.59 akan direject, bisa mengganti 
 
 ![image](https://user-images.githubusercontent.com/81372291/145673263-9276ee7c-7d97-49b5-a15e-9244f5ff0b0c.png)
 
+## Soal 6
+
+```bash
+Karena kita memiliki 2 Web Server, Luffy ingin Guanhao disetting sehingga setiap request dari client yang mengakses DNS Server akan didistribusikan secara bergantian pada Jorge dan Maingate.
+```
+Masukkan perintah - perintah iptables berikut pada **Guanhao**
+
+```bash
+iptables -A PREROUTING -t nat -d 192.177.0.10 -p tcp -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 192.177.0.18
+iptables -A PREROUTING -t nat -d 192.177.0.10 -p tcp -j DNAT --to-destination 192.177.0.19
+```
+
+### Testing
+
+- Pertama - tama, pada kedua node web server jorge dan maingate install service apache dengan menjalankan perintah berikut.
+
+  ```bash
+    apt-get update
+    apt-get install apache2 -y
+  ```
+
+- Setelah berhasil diinstall, edit file _/var/www/html/index.html_ pada kedua node menjadi seperti pada gamber berikut. (Sesuaikan nama node-nya).
+
+  - Maingate dan Jorge
+
+![6-2](https://user-images.githubusercontent.com/55092974/145681678-d81d3d55-a880-4232-a5cc-5b6fc678262e.JPG)
+
+
+- Kemudian restart service apache pada kedua node web server dengan menggunakan perintah :
+
+  ```bash
+  service apache2 restart
+  ```
+
+- Setelah kedua web server berhasil disiapkan, coba akses ke node Doriki (DNS Server) lewat salah satu node yang berhubungan langsung dengan router **Guanhao** (pada kasus ini digunakan node Elena) dengan menggunakan perintah :
+
+  ```bash
+  curl 192.177.0.11
+  ```
+- Pada Testing pertama akses ke Doriki (DNS Server), paket dialihkan ke node Web Server maingate. Perintahkan lagi ke node Doriki (DNS Server) dengan menggunakan perintah yang sama dengan yang diatas.
+
+- maka akses ke Doriki sekarang dialihkan ke node Web Server Jorge. Jika dicoba terus menerus akses ke Doriki, maka paket akan terus menerus dialihkan secara bergantian ke Jorge atau Maingate. Dengan begitu, artinya konfigurasi yang diinginkan telah berhasil diterapkan.
+
+![nomer 6](https://user-images.githubusercontent.com/55092974/145681695-56b1d72e-1d46-4846-a627-f90e6e98a644.JPG)
+
+
 
