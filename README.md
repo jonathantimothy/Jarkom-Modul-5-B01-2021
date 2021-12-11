@@ -286,6 +286,18 @@ Untuk testingnya, lakukan perintah `nmap -p 80 192.177.0.10` pada client. Disini
 
 Jika outputnya port 80 `filtered` maka berhasil `iptables`-nya.
 
+## Soal 3
+Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop
+
+### Jawaban
+
+Untuk Doriki dan Jipangu, masukkan perintah berikut :
+```
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+Untuk melakukan testing, ping dilakukan ke host-host yang ada. 
+
 
 ## Soal 4
 Akses dari subnet Blueno dan Cipher hanya diperbolehkan pada pukul 07.00 - 15.00 pada hari Senin sampai Kamis.
