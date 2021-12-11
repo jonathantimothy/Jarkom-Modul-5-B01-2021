@@ -286,6 +286,30 @@ Untuk testingnya, lakukan perintah `nmap -p 80 192.177.0.10` pada client. Disini
 
 Jika outputnya port 80 `filtered` maka berhasil `iptables`-nya.
 
+
+## Soal 4
+Akses dari subnet Blueno dan Cipher hanya diperbolehkan pada pukul 07.00 - 15.00 pada hari Senin sampai Kamis.
+
+### Jawaban
+Masukkan perintah iptables berikut pada Doriki
+
+```bash
+iptables -A INPUT -s 192.177.0.128/25 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.177.0.128/25 -j REJECT
+iptables -A INPUT -s 192.177.4.0/22 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.177.4.0/22 -j REJECT
+```
+
+### Testing
+untuk testing bisa dilakukan `ping 192.177.0.11` pada waktu antara 07.00 hingga 15.00 hari senin sampai kamis. Dilakukan perintah `date` terlebih dahulu untuk mengecek waktu sekarang. Jika sesuai maka ping akan berhasil dan terlihat seperti berikut :
+
+![image](https://user-images.githubusercontent.com/81372291/145679105-25f07b6e-e5bd-4a34-8600-7ba0c47e8728.png)
+
+selain pada waktu itu ping akan direject dan akan terlihat sebagai berikut :
+
+![image](https://user-images.githubusercontent.com/81372291/145679088-b99cc6dd-9f63-4df3-a737-c7e9d86b6d87.png)
+
+
 ## Soal 5
 Akses dari subnet Elena dan Fukuro hanya diperbolehkan pada pukul 15.01 hingga pukul 06.59 setiap harinya.
 
@@ -309,4 +333,5 @@ untuk testing bisa dilakukan `ping 192.177.0.11` pada waktu antara 15.01 hingga 
 Untuk mengetes apakah selain antara 15.01 - 06.59 akan direject, bisa mengganti date menggunakan perintah `date -s "Mon Dec  6 09:36:18 UTC 2021"` dan melakukan ping lagi. Jika direject maka akan terlihat seperti berikut :
 
 ![image](https://user-images.githubusercontent.com/81372291/145673263-9276ee7c-7d97-49b5-a15e-9244f5ff0b0c.png)
+
 
